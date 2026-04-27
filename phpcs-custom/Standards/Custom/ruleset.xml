@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<ruleset name="Custom">
+  <description>Custom PHPCS standard</description>
+  <rule ref="Custom.Metrics.FunctionLength"/>
+</ruleset>
