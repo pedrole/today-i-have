@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Update;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class UpdateController extends Controller
 {
@@ -12,18 +13,23 @@ class UpdateController extends Controller
      */
     public function index()
     {
-        //
+        $updates = Update::with(['user', 'tags'])
+            ->orderByDesc('posted_on')
+            ->get()
+            ->groupBy('posted_on')
+            ->map(function ($group) {
+                return $group->values();
+            });
+
+        return Inertia::render('updates/Index', [
+            'updatesByDay' => $updates,
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-
-
-
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
