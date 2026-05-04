@@ -1,5 +1,5 @@
-import { PageProps } from '@inertiajs/react';
-import React from 'react';
+import { Link, usePage } from '@inertiajs/react';
+import { create } from '@/routes/updates';
 
 interface Tag {
     id: number;
@@ -15,14 +15,26 @@ interface Update {
     tags: Tag[];
 }
 
-interface Props extends PageProps {
+interface Props {
     updatesByDay: Record<string, Update[]>;
 }
 
 export default function Index({ updatesByDay }: Props) {
+    const { auth } = usePage().props;
+
     return (
         <div className="mx-auto max-w-2xl px-4 py-8">
-            <h1 className="mb-8 text-center text-3xl font-bold">Updates</h1>
+            <div className="mb-8 flex items-center justify-between">
+                <h1 className="text-3xl font-bold">Updates</h1>
+                {auth?.user && (
+                    <Link
+                        href={create()}
+                        className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                    >
+                        + New update
+                    </Link>
+                )}
+            </div>
             {Object.entries(updatesByDay).map(([date, updates]) => (
                 <div key={date} className="mb-8 rounded-lg bg-white p-6 shadow">
                     <h2 className="mb-4 border-b pb-2 text-xl font-semibold text-blue-700">
