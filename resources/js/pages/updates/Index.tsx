@@ -1,4 +1,4 @@
-import { usePage, usePoll } from '@inertiajs/react';
+import { Link, usePage, usePoll } from '@inertiajs/react';
 import { useState } from 'react';
 import {
     Dialog,
@@ -38,33 +38,42 @@ export default function Index({ updatesByDay }: Props) {
         <div className="mx-auto max-w-2xl px-4 py-8">
             <div className="mb-8 flex items-center justify-between">
                 <h1 className="text-3xl font-bold">Updates</h1>
-                {auth?.user && (
-                    <Dialog open={open} onOpenChange={setOpen}>
-                        <DialogTrigger className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
-                            + New update
-                        </DialogTrigger>
-                        <DialogContent className="max-w-lg">
-                            <DialogHeader>
-                                <DialogTitle>Post a new update</DialogTitle>
-                                <DialogDescription>
-                                    Share what you have been working on today.
-                                </DialogDescription>
-                            </DialogHeader>
-                            <UpdateForm
-                                onSuccess={() => setOpen(false)}
-                                cancelSlot={
-                                    <button
-                                        type="button"
-                                        onClick={() => setOpen(false)}
-                                        className="text-sm text-muted-foreground underline"
-                                    >
-                                        Cancel
-                                    </button>
-                                }
-                            />
-                        </DialogContent>
-                    </Dialog>
-                )}
+                <div className="flex items-center gap-3">
+                    <Link
+                        href="/tags"
+                        className="text-sm text-muted-foreground underline"
+                    >
+                        Browse tags
+                    </Link>
+                    {auth?.user && (
+                        <Dialog open={open} onOpenChange={setOpen}>
+                            <DialogTrigger className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+                                + New update
+                            </DialogTrigger>
+                            <DialogContent className="max-w-lg">
+                                <DialogHeader>
+                                    <DialogTitle>Post a new update</DialogTitle>
+                                    <DialogDescription>
+                                        Share what you have been working on
+                                        today.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <UpdateForm
+                                    onSuccess={() => setOpen(false)}
+                                    cancelSlot={
+                                        <button
+                                            type="button"
+                                            onClick={() => setOpen(false)}
+                                            className="text-sm text-muted-foreground underline"
+                                        >
+                                            Cancel
+                                        </button>
+                                    }
+                                />
+                            </DialogContent>
+                        </Dialog>
+                    )}
+                </div>
             </div>
             {Object.entries(updatesByDay).map(([date, updates]) => (
                 <div key={date} className="mb-8 rounded-lg bg-white p-6 shadow">
@@ -85,11 +94,13 @@ export default function Index({ updatesByDay }: Props) {
                                 </span>
                                 <ul className="mt-1 flex gap-2">
                                     {update.tags.map((tag) => (
-                                        <li
-                                            key={tag.id}
-                                            className="rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-700"
-                                        >
-                                            {tag.name}
+                                        <li key={tag.id}>
+                                            <Link
+                                                href={`/tags/${tag.id}`}
+                                                className="rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-700 hover:bg-blue-200"
+                                            >
+                                                {tag.name}
+                                            </Link>
                                         </li>
                                     ))}
                                 </ul>
