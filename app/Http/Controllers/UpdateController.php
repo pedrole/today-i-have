@@ -54,12 +54,11 @@ class UpdateController extends Controller
             ->map(fn (string $tag): string => strtolower(trim($tag)))
             ->filter()
             ->unique()
-            ->map(function (string $tagName): int {
-                return Tag::firstOrCreate([
-                    'name' => $tagName,
-                ])->id;
-            })
-            ->values();
+            ->map(fn (string $tagName): int => Tag::firstOrCreate([
+                'name' => $tagName,
+            ])->id)
+            ->values()
+            ->all();
 
         $update->tags()->sync($tagIds);
 

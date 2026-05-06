@@ -1,5 +1,14 @@
-import { Link, usePage } from '@inertiajs/react';
-import { create } from '@/routes/updates';
+import { usePage, usePoll } from '@inertiajs/react';
+import { useState } from 'react';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
+import UpdateForm from '@/components/update-form';
 
 interface Tag {
     id: number;
@@ -21,18 +30,40 @@ interface Props {
 
 export default function Index({ updatesByDay }: Props) {
     const { auth } = usePage().props;
+    const [open, setOpen] = useState(false);
+
+    usePoll(30_000, { only: ['updatesByDay'] });
 
     return (
         <div className="mx-auto max-w-2xl px-4 py-8">
             <div className="mb-8 flex items-center justify-between">
                 <h1 className="text-3xl font-bold">Updates</h1>
                 {auth?.user && (
-                    <Link
-                        href={create()}
-                        className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-                    >
-                        + New update
-                    </Link>
+                    <Dialog open={open} onOpenChange={setOpen}>
+                        <DialogTrigger className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+                            + New update
+                        </DialogTrigger>
+                        <DialogContent className="max-w-lg">
+                            <DialogHeader>
+                                <DialogTitle>Post a new update</DialogTitle>
+                                <DialogDescription>
+                                    Share what you have been working on today.
+                                </DialogDescription>
+                            </DialogHeader>
+                            <UpdateForm
+                                onSuccess={() => setOpen(false)}
+                                cancelSlot={
+                                    <button
+                                        type="button"
+                                        onClick={() => setOpen(false)}
+                                        className="text-sm text-muted-foreground underline"
+                                    >
+                                        Cancel
+                                    </button>
+                                }
+                            />
+                        </DialogContent>
+                    </Dialog>
                 )}
             </div>
             {Object.entries(updatesByDay).map(([date, updates]) => (
