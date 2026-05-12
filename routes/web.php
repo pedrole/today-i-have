@@ -4,13 +4,8 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\UpdateController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Laravel\Fortify\Features;
 
-Route::get('/', function () {
-    return Inertia::render('welcome', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('home');
+Route::redirect('/', '/updates')->name('home');
 
 Route::get('dashboard', function () {
     return Inertia::render('dashboard');
