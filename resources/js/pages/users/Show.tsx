@@ -1,10 +1,5 @@
 import { Link } from '@inertiajs/react';
 
-interface Tag {
-    id: number;
-    name: string;
-}
-
 interface UpdateTag {
     id: number;
     name: string;
@@ -20,36 +15,28 @@ interface Update {
 }
 
 interface Props {
-    tag: Tag;
+    user: { id: number; name: string };
     updatesByDay: Record<string, Update[]>;
 }
 
-export default function Show({ tag, updatesByDay }: Props) {
+export default function Show({ user, updatesByDay }: Props) {
     const hasUpdates = Object.keys(updatesByDay).length > 0;
 
     return (
         <div className="mx-auto max-w-2xl px-4 py-8">
             <div className="mb-8 flex items-center justify-between">
-                <h1 className="text-3xl font-bold">Tag: #{tag.name}</h1>
-                <div className="flex items-center gap-4">
-                    <Link
-                        href="/tags"
-                        className="text-sm text-muted-foreground underline"
-                    >
-                        All tags
-                    </Link>
-                    <Link
-                        href="/updates"
-                        className="text-sm text-muted-foreground underline"
-                    >
-                        Updates
-                    </Link>
-                </div>
+                <h1 className="text-3xl font-bold">{user.name}</h1>
+                <Link
+                    href="/updates"
+                    className="text-sm text-muted-foreground underline"
+                >
+                    All updates
+                </Link>
             </div>
 
             {!hasUpdates ? (
                 <p className="text-sm text-gray-500">
-                    No updates found for this tag.
+                    No updates found for this user.
                 </p>
             ) : (
                 Object.entries(updatesByDay).map(([date, updates]) => (
@@ -66,15 +53,6 @@ export default function Show({ tag, updatesByDay }: Props) {
                                     key={update.id}
                                     className="flex flex-col gap-1"
                                 >
-                                    <span className="text-sm text-gray-500">
-                                        por{' '}
-                                        <Link
-                                            href={`/users/${update.user?.id}`}
-                                            className="hover:underline"
-                                        >
-                                            {update.user?.name}
-                                        </Link>
-                                    </span>
                                     <span className="font-medium text-gray-900">
                                         {update.title}
                                     </span>
@@ -82,13 +60,13 @@ export default function Show({ tag, updatesByDay }: Props) {
                                         {update.description}
                                     </span>
                                     <ul className="mt-1 flex gap-2">
-                                        {update.tags.map((updateTag) => (
-                                            <li key={updateTag.id}>
+                                        {update.tags.map((tag) => (
+                                            <li key={tag.id}>
                                                 <Link
-                                                    href={`/tags/${updateTag.id}`}
+                                                    href={`/tags/${tag.id}`}
                                                     className="rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-700 hover:bg-blue-200"
                                                 >
-                                                    #{updateTag.name}
+                                                    #{tag.name}
                                                 </Link>
                                             </li>
                                         ))}
