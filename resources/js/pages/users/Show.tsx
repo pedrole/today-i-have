@@ -14,9 +14,28 @@ interface Update {
     tags: UpdateTag[];
 }
 
+interface UserSummary {
+    id: number;
+    name: string;
+    updates_count: number;
+    last_update_on: string | null;
+}
+
 interface Props {
-    user: { id: number; name: string };
+    user: UserSummary;
     updatesByDay: Record<string, Update[]>;
+}
+
+function formatDate(value: string | null): string {
+    if (!value) {
+        return 'No updates yet';
+    }
+
+    return new Intl.DateTimeFormat('en', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+    }).format(new Date(`${value}T00:00:00`));
 }
 
 export default function Show({ user, updatesByDay }: Props) {
@@ -24,18 +43,40 @@ export default function Show({ user, updatesByDay }: Props) {
 
     return (
         <div className="mx-auto max-w-2xl px-4 py-8">
-            <div className="mb-8 flex items-center justify-between">
-                <h1 className="text-3xl font-bold">{user.name}</h1>
+            <div className="mb-8 flex items-start justify-between gap-4">
+                <div>
+                    <p className="mb-2 text-sm font-medium uppercase tracking-[0.2em] text-blue-600">
+                        Contributor profile
+                    </p>
+                    <h1 className="text-3xl font-bold text-gray-900">
+                        {user.name}
+                    </h1>
+                </div>
                 <Link
-                    href="/updates"
+                    href="/users"
                     className="text-sm text-muted-foreground underline"
                 >
-                    All updates
+                    Back to users
                 </Link>
             </div>
 
+            <div className="mb-8 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+                    <p className="text-sm text-gray-500">Updates</p>
+                    <p className="mt-1 text-2xl font-semibold text-gray-900">
+                        {user.updates_count}
+                    </p>
+                </div>
+                <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+                    <p className="text-sm text-gray-500">Last activity</p>
+                    <p className="mt-1 text-2xl font-semibold text-gray-900">
+                        {formatDate(user.last_update_on)}
+                    </p>
+                </div>
+            </div>
+
             {!hasUpdates ? (
-                <p className="text-sm text-gray-500">
+                <p className="rounded-2xl border border-dashed border-gray-300 bg-white px-6 py-10 text-center text-sm text-gray-500 shadow-sm">
                     No updates found for this user.
                 </p>
             ) : (
