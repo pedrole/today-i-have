@@ -17,6 +17,6 @@ Route::resource('updates', UpdateController::class)
     ->middleware(['auth']);
 Route::resource('updates', UpdateController::class)->only(['index', 'show']);
 Route::resource('tags', TagController::class)->only(['index', 'show']);
-Route::resource('users', UserController::class)->only(['show']);
+Route::resource('users', UserController::class)->only(['index', 'show']);
 
 require __DIR__.'/settings.php';

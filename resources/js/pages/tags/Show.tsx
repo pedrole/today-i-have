@@ -70,7 +70,7 @@ export default function Show({ tag, updatesByDay }: Props) {
                                         por{' '}
                                         <Link
                                             href={`/users/${update.user?.id}`}
-                                            className="hover:underline"
+                                            className="font-medium text-gray-700 hover:underline"
                                         >
                                             {update.user?.name}
                                         </Link>
