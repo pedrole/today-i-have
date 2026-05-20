@@ -15,7 +15,7 @@ interface Update {
     title: string;
     description: string;
     posted_on: string;
-    user: { name: string };
+    user: { id: number; name: string };
     tags: UpdateTag[];
 }
 
@@ -67,7 +67,13 @@ export default function Show({ tag, updatesByDay }: Props) {
                                     className="flex flex-col gap-1"
                                 >
                                     <span className="text-sm text-gray-500">
-                                        por {update.user?.name}
+                                        por{' '}
+                                        <Link
+                                            href={`/users/${update.user?.id}`}
+                                            className="font-medium text-gray-700 hover:underline"
+                                        >
+                                            {update.user?.name}
+                                        </Link>
                                     </span>
                                     <span className="font-medium text-gray-900">
                                         {update.title}
