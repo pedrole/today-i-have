@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UpdateController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,5 +17,6 @@ Route::resource('updates', UpdateController::class)
     ->middleware(['auth']);
 Route::resource('updates', UpdateController::class)->only(['index', 'show']);
 Route::resource('tags', TagController::class)->only(['index', 'show']);
+Route::resource('users', UserController::class)->only(['show']);
 
 require __DIR__.'/settings.php';
