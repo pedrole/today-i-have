@@ -96,6 +96,14 @@ export default function Show({ user, updatesByDay }: Props) {
                                         key={update.id}
                                         className="flex flex-col gap-1"
                                     >
+                                        <div className="flex items-center justify-end gap-4">
+                                            <Link
+                                                href={`/updates/${update.id}`}
+                                                className="text-sm text-muted-foreground underline"
+                                            >
+                                                View update
+                                            </Link>
+                                        </div>
                                         <span className="font-medium text-gray-900">
                                             {update.title}
                                         </span>

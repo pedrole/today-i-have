@@ -60,15 +60,23 @@ export default function Show({ tag, updatesByDay }: Props) {
                                         key={update.id}
                                         className="flex flex-col gap-1"
                                     >
-                                        <span className="text-sm text-gray-500">
-                                            por{' '}
+                                        <div className="flex items-center justify-between gap-4">
+                                            <span className="text-sm text-gray-500">
+                                                por{' '}
+                                                <Link
+                                                    href={`/users/${update.user?.id}`}
+                                                    className="font-medium text-gray-700 hover:underline"
+                                                >
+                                                    {update.user?.name}
+                                                </Link>
+                                            </span>
                                             <Link
-                                                href={`/users/${update.user?.id}`}
-                                                className="font-medium text-gray-700 hover:underline"
+                                                href={`/updates/${update.id}`}
+                                                className="text-sm text-muted-foreground underline"
                                             >
-                                                {update.user?.name}
+                                                View update
                                             </Link>
-                                        </span>
+                                        </div>
                                         <span className="font-medium text-gray-900">
                                             {update.title}
                                         </span>
