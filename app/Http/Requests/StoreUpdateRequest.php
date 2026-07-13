@@ -19,18 +19,15 @@ class StoreUpdateRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('updates')->where(function ($query) {
-                    return $query
-                        ->where('user_id', $this->user()->id)
-                        ->whereDate('posted_on', $this->input('posted_on'));
-                }),
             ],
             'description' => ['required', 'string'],
             'posted_on' => [
                 'required',
                 'date',
                 Rule::unique('updates')->where(function ($query) {
-                    return $query->where('user_id', $this->user()->id);
+                    return $query
+                        ->where('user_id', $this->user()->id)
+                        ->whereDate('posted_on', $this->input('posted_on'));
                 }),
             ],
             'tags' => ['nullable', 'string', 'max:255'],
@@ -44,7 +41,6 @@ class StoreUpdateRequest extends FormRequest
             'description.required' => 'Please provide a description.',
             'posted_on.required' => 'Please provide the update date.',
             'posted_on.unique' => 'You can only post one update per day.',
-            'title.unique' => 'An update with this title already exists for this day.',
         ];
     }
 }

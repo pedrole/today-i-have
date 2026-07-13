@@ -162,7 +162,7 @@ test('posted_on is required', function () {
         ->assertSessionHasErrors('posted_on');
 });
 
-test('user cannot post more than one update per day', function () {
+test('user cannot post more than one update per day even with different titles', function () {
     $user = User::factory()->create();
 
     $this
@@ -180,5 +180,31 @@ test('user cannot post more than one update per day', function () {
             'description' => 'Second one',
             'posted_on' => now()->toDateString(),
         ])
-        ->assertSessionHasErrors('posted_on');
+        ->assertSessionHasErrors([
+            'posted_on' => 'You can only post one update per day.',
+        ]);
+});
+
+test('user can reuse the same title on different days', function () {
+    $user = User::factory()->create();
+
+    $this
+        ->actingAs($user)
+        ->post(route('updates.store'), [
+            'title' => 'Daily summary',
+            'description' => 'First day summary',
+            'posted_on' => '2026-07-13',
+        ])
+        ->assertRedirect(route('updates.index', absolute: false));
+
+    $this
+        ->actingAs($user)
+        ->post(route('updates.store'), [
+            'title' => 'Daily summary',
+            'description' => 'Second day summary',
+            'posted_on' => '2026-07-14',
+        ])
+        ->assertRedirect(route('updates.index', absolute: false));
+
+    $this->assertDatabaseCount('updates', 2);
 });
