@@ -4,7 +4,7 @@ A lightweight daily engineering update tracker built with Laravel 12, Inertia Re
 
 This project was built to demonstrate full-stack product delivery under realistic constraints: clean domain rules, polished UX, and reliable automated testing.
 
-## Submission Highlights
+## What We Built
 
 - Homepage redirects to the updates feed (`/` -> `/updates`)
 - Public updates timeline grouped by day
@@ -17,7 +17,7 @@ This project was built to demonstrate full-stack product delivery under realisti
 - Clear one-update-per-user-per-day rule enforced by validation + database + tests
 - Responsive public navbar and shared public layout
 
-## Why This Submission Is Competitive
+## Why This Stands Out
 
 - Product completeness: covers the full workflow from content creation to public discovery and filtering.
 - Technical consistency: business rules are aligned across request validation, persistence constraints, and test assertions.
@@ -151,7 +151,7 @@ Use this 2-minute walkthrough to evaluate product value quickly:
 2. Navigate to a user page and confirm filtered updates grouped by day.
 3. Navigate to a tag page and confirm cross-user filtering by topic.
 4. Sign in, create a new update with comma-separated tags, and verify it appears in:
-	- updates feed
-	- update detail page
-	- tag detail page
+    - updates feed
+    - update detail page
+    - tag detail page
 5. Attempt a second update on the same day for the same user and confirm validation blocks it.
