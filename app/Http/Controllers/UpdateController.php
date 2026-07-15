@@ -7,13 +7,14 @@ use App\Models\Tag;
 use App\Models\Update;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class UpdateController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
         $updates = Update::with(['user', 'tags'])
             ->orderByDesc('posted_on')
@@ -31,7 +32,7 @@ class UpdateController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('updates/Create');
     }
@@ -70,9 +71,26 @@ class UpdateController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Update $update)
+    public function show(Update $update): Response
     {
-        //
+        $update->load(['user', 'tags']);
+
+        return Inertia::render('updates/Show', [
+            'update' => [
+                'id' => $update->id,
+                'title' => $update->title,
+                'description' => $update->description,
+                'posted_on' => $update->posted_on,
+                'user' => [
+                    'id' => $update->user->id,
+                    'name' => $update->user->name,
+                ],
+                'tags' => $update->tags->map(fn (Tag $tag): array => [
+                    'id' => $tag->id,
+                    'name' => $tag->name,
+                ])->values()->all(),
+            ],
+        ]);
     }
 
     /**

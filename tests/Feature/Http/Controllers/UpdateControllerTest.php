@@ -4,6 +4,7 @@ use App\Models\Tag;
 use App\Models\Update;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia as Assert;
 
 uses(RefreshDatabase::class);
 
@@ -11,6 +12,29 @@ test('guests can view updates index', function () {
     $response = $this->get(route('updates.index'));
 
     $response->assertOk();
+});
+
+test('guests can view an update detail page', function () {
+    $user = User::factory()->create();
+    $tag = Tag::create(['name' => 'backend']);
+
+    $update = Update::create([
+        'user_id' => $user->id,
+        'title' => 'Ship update detail page',
+        'description' => 'Built and tested update detail flow.',
+        'posted_on' => '2026-07-13',
+    ]);
+
+    $update->tags()->sync([$tag->id]);
+
+    $this->get(route('updates.show', $update))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('updates/Show')
+            ->where('update.id', $update->id)
+            ->where('update.user.id', $user->id)
+            ->where('update.tags.0.name', 'backend')
+        );
 });
 
 test('guests are redirected to login when opening update create page', function () {
