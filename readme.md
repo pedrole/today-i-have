@@ -63,6 +63,8 @@ composer run dev
 php artisan test --compact
 ```
 
+For deeper documentation, including the database schema and user stories, see the project wiki: https://github.com/pedrole/today-i-have/wiki
+
 ## Architecture Snapshot
 
 ```mermaid
