@@ -11,7 +11,11 @@ uses(RefreshDatabase::class);
 test('guests can view updates index', function () {
     $response = $this->get(route('updates.index'));
 
-    $response->assertOk();
+    $response->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('updates/Index')
+            ->where('updatesByDay', [])
+        );
 });
 
 test('guests can view an update detail page', function () {
