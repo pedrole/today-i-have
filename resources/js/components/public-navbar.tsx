@@ -76,10 +76,10 @@ export default function PublicNavbar() {
                 <div className="hidden md:block">
                     {authUser ? (
                         <Link
-                            href="/dashboard"
+                            href="/updates"
                             className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
                         >
-                            Dashboard
+                            Updates
                         </Link>
                     ) : (
                         <Link
@@ -140,12 +140,10 @@ export default function PublicNavbar() {
                             <div className="mt-2 border-t border-border pt-3">
                                 <SheetClose asChild>
                                     <Link
-                                        href={
-                                            authUser ? '/dashboard' : '/login'
-                                        }
+                                        href={authUser ? '/updates' : '/login'}
                                         className="block rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
                                     >
-                                        {authUser ? 'Dashboard' : 'Login'}
+                                        {authUser ? 'Updates' : 'Login'}
                                     </Link>
                                 </SheetClose>
                             </div>

@@ -4,13 +4,12 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\UpdateController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::redirect('/', '/updates')->name('home');
 
-Route::get('dashboard', function () {
-    return Inertia::render('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::redirect('dashboard', '/updates')
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::resource('updates', UpdateController::class)
     ->except(['index', 'show'])
